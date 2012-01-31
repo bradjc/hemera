@@ -1,0 +1,3 @@
+COMPONENT=RohmBH17TesterC
+
+include $(MAKERULES)
