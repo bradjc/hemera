@@ -1,0 +1,7 @@
+
+
+CFLAGS += -I$(DELUGE_DIR)/extra/hemera
+CFLAGS += -I$(DELUGE_DIR)/extra/msp430
+CFLAGS += -Wl,--section-start=.text=0x4a00
+PFLAGS += -DDELUGE_LITE
+#BOOTLOADER=tosboot
