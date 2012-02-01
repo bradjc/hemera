@@ -8,7 +8,7 @@ PFLAGS += -mdisable-hwmul
 
 # Default BSL assumes telosb-like programming interface
 MSP_BSL ?= tos-bsl
-MSP_BSL_FLAGS = --telosb --swap-reset-test --invert-reset --invert-test
+MSP_BSL_FLAGS = --swap-reset-test --invert-reset --invert-test --speed=38400
 
 VOLUME_FILE = volumes-at45db.xml
 VOLUME_ALLOCATOR ?= tos-storage-at45db
