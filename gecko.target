@@ -19,7 +19,11 @@ endif
 
 PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko
 PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/cc2420x
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/lightmeter
 PFLAGS += -I$(TOSROOTN)/tos/chips/pcf2127a
+
+PFLAGS += -I$(TOSROOTN)/tos/platforms/epic
+PFLAGS += -I$(TOSROOTN)/tos/platforms/epic/chips/ds2411
 
 # Include the gecko-specific targets
 #$(call TOSMake_include_platform,gecko)
