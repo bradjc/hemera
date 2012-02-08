@@ -18,8 +18,9 @@ PFLAGS += -DCC2420_DEF_CHANNEL=$(CC2420_CHANNEL)
 endif
 
 PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko
-PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/cc2420x
-PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/lightmeter
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/cc2420x
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/lightmeter
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/ds2411
 PFLAGS += -I$(TOSROOTN)/tos/chips/pcf2127a
 
 PFLAGS += -I$(TOSROOTN)/tos/platforms/epic
