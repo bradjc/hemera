@@ -19,7 +19,8 @@ endif
 
 PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko
 PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/cc2420x
-PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/lightmeter
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/tsl237t
+PFLAGS += -I$(TOSROOTN)/tos/chips/tsl237t
 PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/lib/timer
 PFLAGS += -I$(TOSROOTN)/tos/chips/pcf2127a
 
