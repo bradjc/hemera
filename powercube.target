@@ -8,12 +8,13 @@ PFLAGS += -mdisable-hwmul
 
 # Default BSL assumes telosb-like programming interface
 MSP_BSL ?= tos-bsl
+MSP_BSL_FLAGS = --telosb
 
 # Special flags for Epic USB Mini Programmer
-MSP_BSL_FLAGS = --swap-reset-test --invert-reset --invert-test
+# MSP_BSL_FLAGS = --swap-reset-test --invert-reset --invert-test
 
-VOLUME_FILE = volumes-at45db.xml
-VOLUME_ALLOCATOR ?= tos-storage-at45db
+# VOLUME_FILE = volumes-at45db.xml
+# VOLUME_ALLOCATOR ?= tos-storage-at45db
 
 ifdef CC2420_CHANNEL
 PFLAGS += -DCC2420_DEF_CHANNEL=$(CC2420_CHANNEL)
