@@ -1,5 +1,7 @@
 COMPONENT=HemeraSamplerC
 
+CFLAGS += -DCC2420_NO_ADDRESS_RECOGNITION
+
 CFLAGS += -DCC2420_DEF_CHANNEL=18
 
 # RPL
@@ -31,12 +33,15 @@ CFLAGS += -DBLIP_L2_RETRIES=5 -DBLIP_L2_DELAY=128
 CFLAGS += -DRECEIVER_ADDR=\"2607:f018:8000:bbba::1\"
 CFLAGS += -DRECEIVER_PORT=4001
 
+#CFLAGS += -DENABLE_LEAF_NODES
+PFLAGS += -DUSE_TESTIO
+
 # Temperature, humidity, and light sample period
 #CFLAGS += -DTHL_SAMPLE_PERIOD=60000
-CFLAGS += -DTHL_SAMPLE_PERIOD=30000
+CFLAGS += -DTHL_SAMPLE_PERIOD=5000
 
 # Whether or not to use the LEDs
-#CFLAGS += -DUSE_LEDS
+CFLAGS += -DUSE_LEDS
 
 # Uncomment this to disable the motion sensor interrupt while sampling the other
 # sensors.
