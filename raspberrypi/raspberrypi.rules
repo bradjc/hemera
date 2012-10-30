@@ -20,8 +20,9 @@ MAIN_EXE = $(BUILDDIR)/main.exe
 MAIN_BIN = $(BUILDDIR)/main.bin
 MAIN_IHEX = $(BUILDDIR)/main.ihex
 INSTALL_BIN = $(MAIN_BIN).out$(if $(NODEID),-$(NODEID),)
-INCLUDE_DIRS ?= $(TOSDIR)/platforms/$(PLATFORM) $(TOSDIRN)/platforms/$(PLATFORM)
-EXTRA_MODULES ?= $(TOSDIR)/platforms/$(PLATFORM)/vectors.c
+INCLUDE_DIRS ?= $(TOSDIR)/platforms/$(PLATFORM) $(TOSROOTN)/tos/platforms/$(PLATFORM)
+#EXTRA_MODULES ?= $(TOSDIR)/platforms/$(PLATFORM)/vectors.c
+NCC_INCLUDE_DIRS = $(TOSROOTN)/tos/platforms/$(PLATFORM)
 
 OPTFLAGS ?= -O3 -g
 #CFLAGS += -mcpu=cortex-m3 -mthumb -fno-strict-aliasing
@@ -33,9 +34,9 @@ PFLAGS += -finline-limit=100000
 PFLAGS += -board=$(SENSORBOARD)
 
 # can be overridden by MP-enabled linker file (see mpu.extra)
-#LINKERFILE_PREFIX ?= sam3u-ek-flash
-LINKERFILE ?= $(LINKERFILE_PREFIX).x
-LDFLAGS += -L$(INCLUDE_DIRS) -T $(LINKERFILE)
+#LINKERFILE_PREFIX ?=
+#LINKERFILE ?= $(LINKERFILE_PREFIX).x
+#LDFLAGS += -L$(INCLUDE_DIRS) -T $(LINKERFILE)
 
 BUILDLESS_DEPS += bytes
 
@@ -81,7 +82,7 @@ exe: exe0 bytes FORCE
 
 exe0: builddir $(BUILD_EXTRA_DEPS) FORCE
 	@echo "    compiling $(COMPONENT) to a $(PLATFORM) binary"
-	$(NCC) -o $(MAIN_EXE) $(OPTFLAGS) $(PFLAGS) $(CFLAGS) $(WIRING_CHECK_FLAGS) $(COMPONENT).nc $(LIBS) $(LDFLAGS)
+	$(NCC) -o $(MAIN_EXE) -I $(NCC_INCLUDE_DIRS) $(OPTFLAGS) $(PFLAGS) $(CFLAGS) $(WIRING_CHECK_FLAGS) $(COMPONENT).nc $(LIBS) $(LDFLAGS) -conly --verbose
 ifdef WIRING_CHECK_FILE
 	@nescc-wiring $(WIRING_CHECK_FILE)
 endif
