@@ -10,6 +10,8 @@ PLATFORM = raspberrypi
 #PFLAGS += -DCC2520_DEF_CHANNEL=$(CC2520_CHANNEL)
 #endif
 
+PFLAGS += -I$(TOSROOTN)/tos/chips/debian
+
 $(call TOSMake_include_platform,raspberrypi)
 
 raspberrypi: $(BUILD_DEPS)
