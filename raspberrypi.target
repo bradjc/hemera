@@ -11,6 +11,7 @@ PLATFORM = raspberrypi
 #endif
 
 PFLAGS += -I$(TOSROOTN)/tos/chips/rpi
+PFLAGS += -I$(TOSROOTN)/tos/platforms/raspberrypi/cc2520
 
 $(call TOSMake_include_platform,raspberrypi)
 
