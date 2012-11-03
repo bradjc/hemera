@@ -8,11 +8,12 @@ endef
 
 HELP += $(RASPBERRYPI_HELP)
 
-OBJCOPY = arm-none-eabi-objcopy
-OBJDUMP = arm-none-eabi-objdump
+CROSS_COMPILE = arm-linux-gnueabi
+OBJCOPY = $(CROSS_COMPILE)-objcopy
+OBJDUMP = $(CROSS_COMPILE)-objdump
 SET_ID = tos-set-symbols
 NCC = ncc
-LIBS = -lm
+LIBS = -lm -lrt /opt/arm1176jzf-s/libbcm2835.a
 
 AMADDR = ActiveMessageAddressC\$$addr
 BUILDDIR ?= build/$(PLATFORM)
@@ -20,14 +21,15 @@ MAIN_EXE = $(BUILDDIR)/main.exe
 MAIN_BIN = $(BUILDDIR)/main.bin
 MAIN_IHEX = $(BUILDDIR)/main.ihex
 INSTALL_BIN = $(MAIN_BIN).out$(if $(NODEID),-$(NODEID),)
-INCLUDE_DIRS ?= $(TOSDIR)/platforms/$(PLATFORM) $(TOSROOTN)/tos/platforms/$(PLATFORM)
+INCLUDE_DIRS ?= $(TOSDIR)/platforms/$(PLATFORM) $(TOSROOTN)/tos/platforms/$(PLATFORM) /opt/arm1176jzf-s
 #EXTRA_MODULES ?= $(TOSDIR)/platforms/$(PLATFORM)/vectors.c
 NCC_INCLUDE_DIRS = $(TOSROOTN)/tos/platforms/$(PLATFORM)
 
 OPTFLAGS ?= -O3 -g
 #CFLAGS += -mcpu=cortex-m3 -mthumb -fno-strict-aliasing
+CFLAGS += brad.c
 PFLAGS += $(EXTRA_MODULES)
-PFLAGS += -I$(INCLUDE_DIRS)
+PFLAGS += $(foreach dir,$(INCLUDE_DIRS),-I$(dir))
 PFLAGS += -Wall -Wshadow $(NESC_FLAGS)
 PFLAGS += -target=$(PLATFORM) -fnesc-cfile=$(BUILDDIR)/app.c
 PFLAGS += -finline-limit=100000
@@ -36,7 +38,7 @@ PFLAGS += -board=$(SENSORBOARD)
 # can be overridden by MP-enabled linker file (see mpu.extra)
 #LINKERFILE_PREFIX ?=
 #LINKERFILE ?= $(LINKERFILE_PREFIX).x
-LDFLAGS += -T default.x
+#LDFLAGS += -T default.x
 
 BUILDLESS_DEPS += bytes
 
@@ -82,7 +84,7 @@ exe: exe0 bytes FORCE
 
 exe0: builddir $(BUILD_EXTRA_DEPS) FORCE
 	@echo "    compiling $(COMPONENT) to a $(PLATFORM) binary"
-	$(NCC) -o $(MAIN_EXE) -I $(NCC_INCLUDE_DIRS) $(OPTFLAGS) $(PFLAGS) $(CFLAGS) $(WIRING_CHECK_FLAGS) $(COMPONENT).nc $(LIBS) $(LDFLAGS) -conly --verbose
+	$(NCC) -o $(MAIN_EXE) -I $(NCC_INCLUDE_DIRS) $(OPTFLAGS) $(PFLAGS) $(CFLAGS) $(WIRING_CHECK_FLAGS) $(COMPONENT).nc $(LIBS) $(LDFLAGS) --verbose
 ifdef WIRING_CHECK_FILE
 	@nescc-wiring $(WIRING_CHECK_FILE)
 endif
