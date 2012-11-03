@@ -13,7 +13,7 @@ OBJCOPY = $(CROSS_COMPILE)-objcopy
 OBJDUMP = $(CROSS_COMPILE)-objdump
 SET_ID = tos-set-symbols
 NCC = ncc
-LIBS = -lm -lrt /opt/arm1176jzf-s/libbcm2835.a
+LIBS = -lm /opt/arm1176jzf-s/libbcm2835.a -lrt
 
 AMADDR = ActiveMessageAddressC\$$addr
 BUILDDIR ?= build/$(PLATFORM)
