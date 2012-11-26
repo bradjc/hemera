@@ -23,9 +23,10 @@ endif
 # add this to let ncc figure things out
 PFLAGS += -I$(TOSROOTN)/tos/platforms/nib
 PFLAGS += -I$(TOSROOTN)/tos/chips/nxppca9575
+PFLAGS += -I$(TOSROOTN)/tos/interfaces
 
 
-# add this because this is basically epic. allows for things that dont know hemera exists
+# add this because this is basically epic.
 PFLAGS += -DPLATFORM_EPIC
 
 # Include the msp extra targets
