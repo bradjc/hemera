@@ -4,7 +4,7 @@
 PLATFORM ?= hemera
 
 # Disable MSP430 hardware multiply because it makes MSPGCC die
-PFLAGS += -mdisable-hwmul
+#PFLAGS += -mdisable-hwmul
 # OPTFLAGS += -O
 
 # Default BSL assumes telosb-like programming interface
