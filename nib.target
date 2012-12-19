@@ -23,6 +23,7 @@ endif
 # add this to let ncc figure things out
 PFLAGS += -I$(TOSROOTN)/tos/platforms/nib
 PFLAGS += -I$(TOSROOTN)/tos/chips/nxppca9575
+PFLAGS += -I$(TOSROOTN)/tos/chips/lcdsniffer
 PFLAGS += -I$(TOSROOTN)/tos/interfaces
 
 
