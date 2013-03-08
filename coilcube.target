@@ -21,6 +21,11 @@ endif
 # add this to let ncc figure things out
 PFLAGS += -I$(TOSROOTN)/tos/platforms/coilcube
 PFLAGS += -I$(TOSROOTN)/tos/chips/fm25lb
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko
+PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko/chips/cc2420x
+#PFLAGS += -I$(TOSROOT)/tos/lib/rfxlink/layers
+#PFLAGS += -I$(TOSROOT)/tos/lib/rfxlink/utils
+PFLAGS += -I$(TOSROOTN)/tos/interfaces
 
 PFLAGS += -I$(TOSROOTN)/tos/platforms/epic
 PFLAGS += -I$(TOSROOTN)/tos/platforms/epic/chips/ds2411
