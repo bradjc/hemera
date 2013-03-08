@@ -33,8 +33,10 @@ PFLAGS += -I$(TOSROOTN)/tos/platforms/epic/chips/ds2411
 
 PFLAGS += -I$(TOSROOTN)/tos/types
 
+PFLAGS += -DPLATFORM_EPIC
+
 # Include the gecko-specific targets
-#$(call TOSMake_include_platform,gecko)
+#$(call TOSMake_include_platform,epic)
 # Include the msp extra targets
 $(call TOSMake_include_platform,msp)
 
