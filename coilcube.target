@@ -9,7 +9,7 @@ MSP_BSL ?= tos-bsl
 
 # Special flags for Epic USB Mini Programmer
 # MSP_BSL_FLAGS = --swap-reset-test --invert-reset --invert-test
-MSP_BSL_FLAGS = --telosb
+# MSP_BSL_FLAGS = --telosb
 
 VOLUME_FILE = volumes-at45db.xml
 VOLUME_ALLOCATOR ?= tos-storage-at45db
