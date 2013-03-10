@@ -32,8 +32,6 @@ PFLAGS += -I$(TOSROOTN)/tos/platforms/epic/chips/ds2411
 PFLAGS += -I$(TOSROOTN)/tos/types
 PFLAGS += -I$(TOSROOTN)/tos/interfaces
 
-#PFLAGS += -I$(TOSROOTN)/tos/platforms/gecko
-
 # add this because this is basically epic.
 PFLAGS += -DPLATFORM_EPIC
 
