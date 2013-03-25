@@ -1,11 +1,9 @@
 /**
  * RohmBH17C is a top-level access component for the Rohm
- * BH17xx model light sensor. Because this component represents
- * one physical device, multiple calls will be arbitrated and
- * executed in sequential order.
+ * BH17xx model light sensor.
  *
  * @author Brad Campbell <bradjc@umich.edu>
- * @version $Revision: 1.5 $ $Date: 2013/03/24 11:31:12 $
+ * @version 1.5
  */
 
 configuration RohmBH17C {

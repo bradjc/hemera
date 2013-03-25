@@ -1,7 +1,7 @@
 #include <I2C.h>
 
 /**
- * RohmBH17LogicP contains the actual driver logic needed to
+ * RohmBH17P contains the actual driver logic needed to
  * read from the Rohm BH17xx digital light sensor. It
  * uses the I2C interface and timer to wait for the measurement to
  * complete.
@@ -29,7 +29,7 @@ module RohmBH17P {
 }
 implementation {
 
-uint8_t BH17_ADDR = 0x23;
+#define BH17_ADDR 0x23
 
   enum {
     OPC_POWER_DOWN       = 0,
