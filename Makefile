@@ -1,12 +1,12 @@
 COMPONENT=HemeraSamplerC
 
-CFLAGS += -DCC2420_NO_ADDRESS_RECOGNITION
+#CFLAGS += -DCC2420_NO_ADDRESS_RECOGNITION
 
-CFLAGS += -DCC2420_DEF_CHANNEL=18
+CFLAGS += -DCC2420_DEF_CHANNEL=19
 
 # RPL
 PFLAGS += -DRPL_ROUTING -DRPL_STORING_MODE
-PFLAGS += -DRPL_OF_MRHOF
+#PFLAGS += -DRPL_OF_MRHOF
 
 # Include other stuff...
 # PFLAGS += -I../../tos/chips/bh17
@@ -22,23 +22,23 @@ PFLAGS += -DRPL_OF_MRHOF
 
 # this disables dhcp and statically chooses a prefix.  the motes form
 # their ipv6 address by combining this with TOS_NODE_ID
-PFLAGS += -DIN6_PREFIX=\"2607:f018:8000:bbba::\"
+#PFLAGS += -DIN6_PREFIX=\"2607:f018:8000:bbba::\"
 
 # the sleep interval needs to be set the same for all participating devices
-CFLAGS += -DLOW_POWER_LISTENING -DLPL_SLEEP_INTERVAL=512 -DLPL_DEF_LOCAL_WAKEUP=512 -DLPL_DEF_REMOTE_WAKEUP=512
+#CFLAGS += -DLOW_POWER_LISTENING -DLPL_SLEEP_INTERVAL=512 -DLPL_DEF_LOCAL_WAKEUP=512 -DLPL_DEF_REMOTE_WAKEUP=512
 # also modifiy blip's L2 parameters to reduce media overload
-CFLAGS += -DBLIP_L2_RETRIES=5 -DBLIP_L2_DELAY=128
+#CFLAGS += -DBLIP_L2_RETRIES=5 -DBLIP_L2_DELAY=128
 
 # Set the address and port to send the packets to
-CFLAGS += -DRECEIVER_ADDR=\"2607:f018:8000:bbba::1\"
-CFLAGS += -DRECEIVER_PORT=4001
+CFLAGS += -DRECEIVER_ADDR=\"2001:470:1f10:131c::2\"
+CFLAGS += -DRECEIVER_PORT=2001
 
 #CFLAGS += -DENABLE_LEAF_NODES
-PFLAGS += -DUSE_TESTIO
+#PFLAGS += -DUSE_TESTIO
 
 # Temperature, humidity, and light sample period
 #CFLAGS += -DTHL_SAMPLE_PERIOD=60000
-CFLAGS += -DTHL_SAMPLE_PERIOD=5000
+CFLAGS += -DTHL_SAMPLE_PERIOD=1000
 
 # Whether or not to use the LEDs
 CFLAGS += -DUSE_LEDS
@@ -48,8 +48,8 @@ CFLAGS += -DUSE_LEDS
 CFLAGS += -DPAUSE_MOTION
 
 #PFLAGS += -DBINARY_SHELL
-PFLAGS += -DBLIP_REMOVE_PING
-PFLAGS += -DBLIP_MINI_SHELL
+#PFLAGS += -DBLIP_REMOVE_PING
+#PFLAGS += -DBLIP_MINI_SHELL
 
 # Enable the watchdog timer and use a timer to pet it every second
 #PFLAGS += -DUSE_WATCHDOG

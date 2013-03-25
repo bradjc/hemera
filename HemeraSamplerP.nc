@@ -37,30 +37,29 @@ module HemeraSamplerP {
 
 implementation {
 
-  nx_struct udp_thlm_t  payload_thl;      // Packet struct to send to receiver
-  uint8_t               current_motion;   // Global variable where 1 =motion sensor is high, 0=motion sensor is low
-  uint16_t              temperature;      // Global variables for sensor data
-  uint16_t              humidity;
-  uint16_t              light;
-  uint16_t              battery;
-  uint8_t               thlsensor_reads;  // Number of sensors that have been read
-  uint8_t               sample_count;
-  struct sockaddr_in6   dest;             // Where to send the packet
+  udp_thl_t payload_thl;    // Packet struct to send to receiver
+  uint8_t   current_motion; // Global variable where 1=motion sensor is high,
+                            // 0=motion sensor is low
+  uint16_t  temperature;    // Global variables for sensor data
+  uint16_t  humidity;
+  uint16_t  light;
+  uint16_t  battery;
+  uint8_t   sample_count;
+
+  struct sockaddr_in6 dest; // Where to send the packet
 
 #ifdef USE_LOGGING
   uint8_t  serial_buf[65];
 #endif
 
-  task void sendTHLData_task ();
-  void      sendTHLData (uint8_t);
-  void      THLRead ();
-  void      check_all_sensors_done ();
+  void sendTHLData();
 
   event void Boot.booted () {
     atomic {
       current_motion = 0;
 
-      call MotionSensorGpIO.selectIOFunc(); // Initialize interrupt for motion sensor
+      // Initialize interrupt for motion sensor
+      call MotionSensorGpIO.selectIOFunc();
       call MotionSensorGpIO.makeInput();
       call MotionSensor.edge(TRUE);
       call MotionSensor.enable();
@@ -88,10 +87,29 @@ implementation {
     }
   }
 
+  event void RadioControl.startDone (error_t e) {
+    if (e == SUCCESS) {
+#ifdef USE_LOGGING
+      call UartStream.enableReceiveInterrupt();
+#endif
+      call TimerTHL.startPeriodic(THL_SAMPLE_PERIOD);
+    } else {
+      call RadioControl.start();
+    }
+  }
+
+  event void TimerTHL.fired () {
+#if defined(PAUSE_MOTION)
+    call MotionSensor.disable();
+#endif
+
+    call Temp.read();
+  }
+
 
   /** Functions **/
 
-  void sendTHLData (uint8_t _motion) {
+  void sendTHLData () {
     error_t err;
 
     uint8_t size;
@@ -100,7 +118,8 @@ implementation {
       payload_thl.temperature = temperature;
       payload_thl.humidity    = humidity;
       payload_thl.light       = light;
-      payload_thl.motion      = _motion;
+      payload_thl.motion      = current_motion;
+      current_motion          = 0;
       payload_thl.battery     = battery;
     }
 
@@ -113,7 +132,6 @@ implementation {
     }
 
 #ifdef USE_LOGGING
-    // log
     call LogWrite.append(&payload_thl, size);
 #endif
 
@@ -122,64 +140,18 @@ implementation {
 
     if (err == SUCCESS) call Leds.led1Toggle();
     else call Leds.led0Toggle();
-  }
 
-  void THLRead () {
-    call Temp.read();
-    call Hum.read();
-    call LightSensor.read();
-
-    if (sample_count == 6) {
-      call BatSensor.read();
-    } else {
-      sample_count++;
-    }
-  //    call BatSensor.read();
-  //  post sendTHLData_task();
-  }
-
-  // called by the sensor_readDone()s to check whether or not they all finished and it"s
-  // time to send the packet
-  void check_all_sensors_done () {
-    atomic {
-      thlsensor_reads = thlsensor_reads + 1;
-      if ((sample_count >= 6 && thlsensor_reads >= 4) ||
-         (sample_count < 6   && thlsensor_reads >=3)) {
-        post sendTHLData_task();
-      }
-    }
-  }
-
-  /** Misc Events **/
-
-  event void RadioControl.startDone (error_t e) {
-    if (e == SUCCESS) {
-#ifdef USE_LOGGING
-      call UartStream.enableReceiveInterrupt();
-#endif
-      call TimerTHL.startPeriodic(THL_SAMPLE_PERIOD);
-    } else {
-      call RadioControl.start();
-    }
-  }
-
-  /** Tasks **/
-
-  task void sendTHLData_task () {
-    // clear and re enable the motion interrupt if it was triggered
+    // re-enable the motion sensor in case it was disabled
     call MotionSensor.clear();
     call MotionSensor.enable();
-    atomic {
-      sendTHLData(current_motion);
-      current_motion = 0;
-    }
   }
 
   /** Events **/
 
   // Called when the motion sensor detects motion.
   async event void MotionSensor.fired () {
-    // we don't need to handle any more motion interrupts until we do our send event
+    // we don't need to handle any more motion interrupts until we do our
+    // send event
     call MotionSensor.disable();
 
     atomic {
@@ -187,40 +159,33 @@ implementation {
     }
   }
 
-  event void TimerTHL.fired () {
-    atomic { thlsensor_reads = 0; }
-
-#if defined(PAUSE_MOTION)
-    call MotionSensor.disable();
-#endif
-
-    THLRead();
-  }
-
   event void Temp.readDone (error_t e, uint16_t data) {
- //   if (e != SUCCESS) return;
-
-    temperature = data;
-    check_all_sensors_done();
+    temperature = (e == SUCCESS) ? data : -1;
+    call Leds.led0Toggle();
+    call Hum.read();
   }
 
   event void Hum.readDone (error_t e, uint16_t data) {
-  //  if (e != SUCCESS) return;
-
-    humidity = data;
-    check_all_sensors_done();
+    error_t error;
+    humidity = (e == SUCCESS) ? data : -1;
+    call Leds.led1Toggle();
+    call LightSensor.read();
   }
 
   event void LightSensor.readDone (error_t e, uint16_t data) {
-  //  if (e != SUCCESS) return;
-
-    light = data;
-    check_all_sensors_done();
+    light = (e == SUCCESS) ? data : -1;
+    call Leds.led2Toggle();
+    if (sample_count == 6) {
+      call BatSensor.read();
+    } else {
+      sample_count++;
+      sendTHLData();
+    }
   }
 
   event void BatSensor.readDone (error_t e, uint16_t data) {
-    battery = data;
-    check_all_sensors_done();
+    battery = (e == SUCCESS) ? data : -1;
+    sendTHLData();
   }
 
 #ifdef USE_WATCHDOG
@@ -234,10 +199,13 @@ implementation {
 
   // Serial Logging
 #ifdef USE_LOGGING
-  async event void UartStream.receiveDone(uint8_t* buf, uint16_t len, error_t e) {
+  async event void UartStream.receiveDone(uint8_t* buf,
+                                          uint16_t len,
+                                          error_t e) {
 
     if (len >= 5) {
-      if (buf[0] == 's' && buf[0] == 't' && buf[0] == 'a' && buf[0] == 'r' && buf[0] == 't') {
+      if (buf[0] == 's' && buf[0] == 't' && buf[0] == 'a' &&
+          buf[0] == 'r' && buf[0] == 't') {
 
         // pause logging
         call TimerTHL.stop();
@@ -269,17 +237,25 @@ implementation {
 
 	}
 
-	async event void UartStream.sendDone(uint8_t* buf, uint16_t len, error_t error) {
+	async event void UartStream.sendDone(uint8_t* buf,
+                                       uint16_t len,
+                                       error_t error) {
     call LogRead.read(serial_buf, 64);
   }
 
 	event void LogWrite.syncDone (error_t error) { }
   event void LogWrite.eraseDone (error_t error) { }
-  event void LogWrite.appendDone (void* buf, storage_len_t len, bool recordsLost, error_t error) { }
+  event void LogWrite.appendDone (void* buf,
+                                  storage_len_t len,
+                                  bool recordsLost,
+                                  error_t error) { }
 
 	async event void UartStream.receivedByte(uint8_t byte) { }
 #endif
 
-  event void UDPService.recvfrom (struct sockaddr_in6 *from, void *data, uint16_t len, struct ip6_metadata *meta) { }
+  event void UDPService.recvfrom (struct sockaddr_in6 *from,
+                                  void *data,
+                                  uint16_t len,
+                                  struct ip6_metadata *meta) { }
   event void RadioControl.stopDone (error_t e) { }
 }

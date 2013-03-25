@@ -19,15 +19,16 @@ implementation {
   HemeraSamplerP.Leds -> Led;
 
   // General Timer
-  components new TimerMilliC() as TimerTHL;	// Temperature, Humidity, and Light sensor timer
+  components new TimerMilliC() as TimerTHL;	// Temperature, Humidity, and
+                                            // Light sensor timer
   HemeraSamplerP.TimerTHL -> TimerTHL;
 
-#ifdef USE_LOGGING  
+#ifdef USE_LOGGING
   // Storage
 	components new LogStorageC(VOLUME_DATA, TRUE);
 	HemeraSamplerP.LogRead	-> LogStorageC;
 	HemeraSamplerP.LogWrite	-> LogStorageC;
-  
+
   // Serial
 	components PlatformSerialC;
 	HemeraSamplerP.UartStream		-> PlatformSerialC;
@@ -47,7 +48,7 @@ implementation {
 
   // Light
   components RohmBH17C as LightSen;
-  HemeraSamplerP.LightSensor -> LightSen.Light;
+  HemeraSamplerP.LightSensor -> LightSen.ReadLux;
 
   // Battery ADC
   components BatteryAdcC as BatterySen;
@@ -59,7 +60,7 @@ implementation {
   HemeraSamplerP.TimerWatchdog -> TimerWatchdog;
 #endif
 
-  // Radio 
+  // Radio
   components IPStackC;
   components new UdpSocketC() as UDPService;
   HemeraSamplerP.RadioControl -> IPStackC;
