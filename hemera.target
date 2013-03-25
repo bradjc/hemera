@@ -22,15 +22,14 @@ endif
 
 # add this to let ncc figure things out
 PFLAGS += -I$(TOSROOTN)/tos/platforms/hemera
+PFLAGS += -I$(TOSROOTN)/tos/platforms/hemera/chips/bh1721
 PFLAGS += -I$(TOSROOTN)/tos/chips/bh17
-PFLAGS += -I$(TOSROOTN)/tos/chips/msp430/usart
 PFLAGS += -I$(TOSROOTN)/tos/chips/cc2420/dataack
 PFLAGS += -I$(TOSROOTN)/tos/chips/cc2420/leaftrack
 PFLAGS += -I$(TOSROOTN)/tos/chips/cc2420/dutycyclemanager
 PFLAGS += -I$(TOSROOTN)/tos/chips/cc2420/lpl
 
 PFLAGS += -I$(TOSROOTN)/tos/platforms/epic
-PFLAGS += -I$(TOSROOTN)/tos/platforms/epic/chips/ds2411
 
 PFLAGS += -I$(TOSROOTN)/tos/types
 
