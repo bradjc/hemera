@@ -12,7 +12,7 @@ implementation {
   components new TimerMilliC() as Timer0;
   RohmBH17TesterP.Timer0 -> Timer0;
 
-  components new RohmBH17C() as LightSen;
-  RohmBH17TesterP.LightSensor -> LightSen.Light;
+  components RohmBH17C as LightSen;
+  RohmBH17TesterP.LightSensor -> LightSen.ReadLux;
 
 }

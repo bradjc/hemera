@@ -11,14 +11,14 @@ module RohmBH17TesterP {
 implementation {
 
   event void Boot.booted () {
-    call Timer0.startPeriodic(3000);
+    call Timer0.startPeriodic(1000);
   }
 
   event void Timer0.fired() {
     call Leds.led1Toggle();
     call LightSensor.read();
   }
-  
+
   event void LightSensor.readDone (error_t e, uint16_t data) {
     if (e != SUCCESS) {
       call Leds.led0Toggle();
