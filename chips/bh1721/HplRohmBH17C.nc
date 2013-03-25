@@ -1,9 +1,6 @@
 /**
- * HalRhomBH17C is an advanced access component for the
- * Rohm BH17xx model light sensor. This component provides
- * the RohmBH17 interface, which offers currently limited
- * control over the device. Please acquire the Resource
- * before using it.
+ * HplRhomBH17C defines which GPIO the reset pin is connected to and which
+ * I2C bus to use.
  *
  * @author Brad Campbell <bradjc@umich.edu>
  * @version 1.5
