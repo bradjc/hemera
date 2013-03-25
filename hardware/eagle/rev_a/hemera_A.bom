@@ -1,0 +1,30 @@
+Partlist
+
+Exported from hemera_A.sch at 7/29/2010 10:27:06 AM
+
+EAGLE Version 5.10.0 Copyright (c) 1988-2010 CadSoft
+
+Qty	Value						Device						Parts				Mfg			MfgPartNum
+
+4	0.1u						C-USC0603					C1, C6, C8, C10		Panasonic	ECJ-1VB1C104K
+2	0.1u						C-EUC0603					C7, C9				Panasonic	ECJ-1VB1C104K
+4	10u							C-EUC0603					C2, C3, C4, C5		Murata		GRM188R60J106ME47D
+1	QTLP600C7TR					LED0603						D1
+1	QTLP601C4TR					LED0603						D2
+1	QTLP601CEBTR				LED0603						D3
+1	TEMD6010FX01				TEMD6010FX01				D4					Vishay		TEMD6010FX01
+1	SD103AW						SCHTTKY_DIODE_MINIMELF		D9					MCC			SD103AW-TP
+3	470							R-US_R0603					R1, R2, R3			Panasonic	ERJ-3GEYJ471V
+3	100k						R-US_R0603					R4, R7, R13			Panasonic	ERJ-3GEYJ104V
+1	10k							R-US_R0603					R6					Panasonic	ERJ-3GEYJ103V
+2	3M							R-US_R0603					R8, R10				Panasonic	ERJ-3GEYJ305V
+3	??							R-US_R0603					R9, R11, R12
+2	EVQP2						EVQP2						S1, S2				Panasonic	EVQ-P2K02Q
+1	SHT1XSMD					SHT1X						U2
+1	MIC5231						MIC5231						U4					Micrel		MIC5231-3.0YM5
+1	MIC5235						MIC5235						U8					Micrel		MIC5235-3.0YM5
+1	LT6003						LT6003						U5					Linear		LT6003IS5
+1	AMN32122					AMN32122					U6					Panasonic	AMN32122
+1	BATTHOLDER-KEYSTONE-3008	BATTHOLDER-KEYSTONE-3008	BH1					Keystone	3008K-ND
+1	EPIC-CORE_A					EPIC-CORE_A					U1
+1	EPIC-PROG-EDGE				EPIC-PROG-EDGE				J2
