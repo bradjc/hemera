@@ -8,8 +8,8 @@
 # won't be processed by ncc.
 
 push( @includes, qw(
-
   %T/platforms/epic
+  %T/platforms/epic/eui64
   %T/platforms/epic/chips/at45db
   %T/platforms/epic/chips/ds2411
   %T/platforms/telosa
@@ -37,7 +37,7 @@ push( @includes, qw(
   %T/chips/msp430/usart
   %T/chips/msp430/sensors
   %T/chips/at45db
-  %T/chips/ds2401
+  %T/chips/ds2411
   %T/chips/sht11
   %T/lib/timer
   %T/lib/serial
@@ -47,6 +47,7 @@ push( @includes, qw(
   %T/lib/net/Deluge/extra
   %T/lib/net/Deluge/extra/hemera
   %T/lib/net/Deluge/extra/msp430
+  %T/system/onewire
 ) );
 
 # The @opts list contains parameters that are passed to ncc.
