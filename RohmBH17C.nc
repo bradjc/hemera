@@ -5,17 +5,23 @@
  * executed in sequential order.
  *
  * @author Brad Campbell <bradjc@umich.edu>
- * @version $Revision: 1.0 $ $Date: 2011/01/28 11:31:12 $
+ * @version $Revision: 1.5 $ $Date: 2013/03/24 11:31:12 $
  */
 
 configuration RohmBH17C {
-	provides interface Read<uint16_t> as Light;
+  provides {
+  	interface Read<uint16_t> as ReadLux;
+  }
 }
 implementation {
-  components RohmBH17ReaderP;
-  Light = RohmBH17ReaderP.Light;
+  components RohmBH17P;
+  ReadLux = RohmBH17P.ReadLux;
 
-  components HalRohmBH17C;
-  RohmBH17ReaderP.BH17LightSen	-> HalRohmBH17C.RohmBH17;
-	
+  components HplRohmBH17C;
+  RohmBH17P.I2CPacket -> HplRohmBH17C.I2CPacket;
+  RohmBH17P.I2CResource -> HplRohmBH17C.I2CResource;
+  RohmBH17P.LightReset -> HplRohmBH17C.LightReset;
+
+  components new TimerMilliC() as TimerWait;
+  RohmBH17P.TimerWait -> TimerWait;
 }
