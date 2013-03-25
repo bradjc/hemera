@@ -1,4 +1,0 @@
-#-*-Makefile-*-
-
-PFLAGS += -I$(TOSROOTN)/tos/platforms/epic/chips/cc2520
-#PFLAGS += -I$(TOSROOTN)/tos/chips/msp430/pins

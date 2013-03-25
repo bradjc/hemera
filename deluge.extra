@@ -1,8 +1,0 @@
-# -*- makefile -*-
-
-
-# directories for deluge components
-PFLAGS += -I$(TOSROOTN)/tos/lib/net/Deluge
-PFLAGS += -I$(TOSROOT)/tos/lib/net/Deluge
-PFLAGS += -I$(TOSROOT)/tos/lib/net/Deluge/FlashManager
-

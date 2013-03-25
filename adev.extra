@@ -1,6 +1,0 @@
-# -*- makefile -*-
-
-
-PFLAGS+=-I$(TOSROOTDEV)/tos/lib/net/rpl/
-PFLAGS+=-I$(TOSROOTDEV)/tos/lib/net/blip/nwprog/
-
