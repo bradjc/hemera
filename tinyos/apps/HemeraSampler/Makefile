@@ -1,51 +1,92 @@
 COMPONENT=HemeraSamplerC
 
-#CFLAGS += -DCC2420_NO_ADDRESS_RECOGNITION
+PFLAGS += -DCC2420_DEF_CHANNEL=19
 
-CFLAGS += -DCC2420_DEF_CHANNEL=19
+################################################################################
+### Set the addressing scheme
+################################################################################
 
-# RPL
-PFLAGS += -DRPL_ROUTING -DRPL_STORING_MODE
-#PFLAGS += -DRPL_OF_MRHOF
+# Use IN6_PREFIX with static addressing modes
+#PFLAGS += -DIN6_PREFIX="\"::\""
+# Use BLIP Neighbor Discovery to autoconfigure an address
+PFLAGS += -DBLIP_ADDR_AUTOCONF=0
+# Use RPL and prefix information in DIO messages to autoconfigure an address
+PFLAGS += -DRPL_ADDR_AUTOCONF=1
 
-# Include other stuff...
-# PFLAGS += -I../../tos/chips/bh17
-#PFLAGS += -I../../tos/platforms/hemera/chips/bh17
-# tell the 6lowpan layer to not generate hc-compressed headers
-# PFLAGS += -DLIB6LOWPAN_HC_VERSION=-1
+################################################################################
+### Configure BLIP
+################################################################################
 
-# if you're using DHCP, set this to try and derive a 16-bit address
-# from the IA received from the server.  This will work if the server
-# gives out addresses from a /112 prefix.  If this is not set, blip
-# will only use EUI64-based link addresses.
-#PFLAGS += -DBLIP_DERIVE_SHORTADDRS
+# Configure the Neighbor Discovery mechanism
+PFLAGS += -DBLIP_SEND_ROUTER_SOLICITATIONS=0
+PFLAGS += -DBLIP_SEND_ROUTER_ADVERTISEMENTS=0
 
-# this disables dhcp and statically chooses a prefix.  the motes form
-# their ipv6 address by combining this with TOS_NODE_ID
-#PFLAGS += -DIN6_PREFIX=\"2607:f018:8000:bbba::\"
+# Configure the number of times BLIP tries to send a packet and how long it
+# waits between attempts
+PFLAGS += -DBLIP_L2_RETRIES=3
+PFLAGS += -DBLIP_L2_DELAY=128
 
-# the sleep interval needs to be set the same for all participating devices
-#CFLAGS += -DLOW_POWER_LISTENING -DLPL_SLEEP_INTERVAL=512 -DLPL_DEF_LOCAL_WAKEUP=512 -DLPL_DEF_REMOTE_WAKEUP=512
-# also modifiy blip's L2 parameters to reduce media overload
-#CFLAGS += -DBLIP_L2_RETRIES=5 -DBLIP_L2_DELAY=128
+# Configure how many of the 6LoWPAN headers we support
+#PFLAGS += -DLIB6LOWPAN_FULL=1
+
+# Configure the header compression for 6LoWPAN
+PFLAGS += -DLIB6LOWPAN_HC_VERSION=6
+
+# Keep statistics about various BLIP/IPv6 parameters. See BlipStatistics.h
+#PFLAGS += -DBLIP_STATS
+#PFLAGS += -DBLIP_STATS_IP_MEM
+
+################################################################################
+### Configure RPL
+################################################################################
+
+# Include the RPL layer if set to 1
+PFLAGS += -DRPL_ROUTING=1
+
+# If set keep routing information in each node. If not the root must keep all
+# routing information.
+PFLAGS += -DRPL_STORING_MODE=1
+
+# Choose the objective function RPL should use
+PFLAGS += -DRPL_OF_0=0
+PFLAGS += -DRPL_OF_MRHOF=1
+
+################################################################################
+### Configure LPL
+################################################################################
+
+PFLAGS += -DLOW_POWER_LISTENING
+PFLAGS += -DLPL_SLEEP_INTERVAL=512
+PFLAGS += -DLPL_DEF_LOCAL_WAKEUP=512
+PFLAGS += -DLPL_DEF_REMOTE_WAKEUP=512
+
+################################################################################
+### Configure printf() output
+################################################################################
+
+#PFLAGS += -DPRINTFUART_ENABLED
+
+################################################################################
+### Configure this application
+################################################################################
 
 # Set the address and port to send the packets to
-CFLAGS += -DRECEIVER_ADDR=\"2001:470:1f10:131c::2\"
-CFLAGS += -DRECEIVER_PORT=2001
+PFLAGS += -DRECEIVER_ADDR=\"2001:470:1f10:131c::2\"
+PFLAGS += -DRECEIVER_PORT=4001
 
-#CFLAGS += -DENABLE_LEAF_NODES
+#PFLAGS += -DENABLE_LEAF_NODES
 #PFLAGS += -DUSE_TESTIO
 
 # Temperature, humidity, and light sample period
-#CFLAGS += -DTHL_SAMPLE_PERIOD=60000
-CFLAGS += -DTHL_SAMPLE_PERIOD=1000
+#PFLAGS += -DTHL_SAMPLE_PERIOD=60000
+PFLAGS += -DTHL_SAMPLE_PERIOD=1000
 
 # Whether or not to use the LEDs
-CFLAGS += -DUSE_LEDS
+PFLAGS += -DUSE_LEDS
 
 # Uncomment this to disable the motion sensor interrupt while sampling the other
 # sensors.
-CFLAGS += -DPAUSE_MOTION
+PFLAGS += -DPAUSE_MOTION
 
 #PFLAGS += -DBINARY_SHELL
 #PFLAGS += -DBLIP_REMOVE_PING
@@ -54,8 +95,9 @@ CFLAGS += -DPAUSE_MOTION
 # Enable the watchdog timer and use a timer to pet it every second
 #PFLAGS += -DUSE_WATCHDOG
 
-#PFLAGS += -DPRINTFUART_ENABLED
-
 #PFLAGS += -DUSE_LOGGING
 
-include $(MAKERULES)
+GOALS += blip rpl
+
+TINYOS_ROOT_DIR?=../..
+include $(TINYOS_ROOT_DIR)/Makefile.include
