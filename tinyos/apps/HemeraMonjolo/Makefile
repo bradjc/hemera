@@ -1,6 +1,6 @@
 COMPONENT=HemeraMonjoloC
 
-PFLAGS += -DCC2420_DEF_CHANNEL=21
+PFLAGS += -DCC2420_DEF_CHANNEL=18
 
 ################################################################################
 ### Set the addressing scheme
@@ -41,7 +41,7 @@ PFLAGS += -DLIB6LOWPAN_HC_VERSION=6
 ################################################################################
 
 # Include the RPL layer if set to 1
-#PFLAGS += -DRPL_ROUTING=1
+PFLAGS += -DRPL_ROUTING=0
 
 # If set keep routing information in each node. If not the root must keep all
 # routing information.
@@ -71,7 +71,7 @@ PFLAGS += -DLPL_DEF_REMOTE_WAKEUP=512
 ################################################################################
 
 # Set the address and port to send the packets to
-PFLAGS += -DRECEIVER_ADDR=\"2001:470:1f10:131c::2\"
+PFLAGS += -DRECEIVER_ADDR=\"2001:470:1f10:1320::2\"
 PFLAGS += -DRECEIVER_PORT=4001
 
 #PFLAGS += -DENABLE_LEAF_NODES

@@ -69,7 +69,7 @@ implementation {
 
   components StaticIPAddressC;
 
-#ifdef RPL_ROUTING
+#if RPL_ROUTING
   components RPLRoutingC;
 #endif
 

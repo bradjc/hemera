@@ -80,6 +80,9 @@ implementation {
       call ForwardingTable.addRoute(dest.sin6_addr.s6_addr, 128, &next_hop,
       ROUTE_IFACE_154);
 
+      memcpy(&payload_thl.profile_id, PROFILE_ID, 10);
+      payload_thl.version = VERSION;
+
       call Leds.led2On();
 
 #ifdef USE_WATCHDOG
