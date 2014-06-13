@@ -8,6 +8,10 @@ The node contains three key sensors:
 - Rohm BH1721 (Light)
 - PIR (Motion)
 
+[
+![hemera](http://www.bradcampbell.com/wp-content/uploads/2012/05/hemera_project.jpg)
+](http://www.bradcampbell.com/wp-content/uploads/2012/05/hemera_project.jpg)
+
 
 Setup
 -----
@@ -31,8 +35,8 @@ Setup
 
 ### 3) Add to `bash.rc`:
 
-    export TINYOS_ROOT_DIR_ADDITIONAL=<path to>/hemera/tinyos:$TINYOS_ROOT_DIR_ADDITIONAL
     export TINYOS_ROOT_DIR=<path to>/tinyos-main
+    export TINYOS_ROOT_DIR_ADDITIONAL=<path to>/hemera/tinyos:$TINYOS_ROOT_DIR_ADDITIONAL
 
 
 ### 4) Set up the RaspberryPi (optional, but recommended):
