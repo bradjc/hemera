@@ -1,4 +1,4 @@
-HemeraAM
+HemeraBlip
 ========
 @author Thomas Zachariah
 @url    http://github.com/lab11/hemera
@@ -7,8 +7,8 @@ HemeraAM
 Overview
 --------
 
-HemeraAM samples temperature, humidity, light, and motion, 
-and sends the recorded data via Active Message. 
+HemeraBlip samples temperature, humidity, light, and motion, 
+and sends the recorded data via Blip interface. 
 
 
 Installation
@@ -23,7 +23,7 @@ RUN:
 
 (where # is the intended id number of the device) OR
 
-    make hemera install miniprog bsl,/dev/ttyUSB0
+    make hemera blip install miniprog bsl,/dev/ttyUSB0
 
 When using the install script or the alternate command,
 ensure location (`/dev/ttyUSB?`) is correct.
