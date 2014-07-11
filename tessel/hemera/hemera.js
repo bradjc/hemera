@@ -1,46 +1,57 @@
-var NODE_ID = 20;
-var PROFILE = 'TtYWhXKRke';
-var GATD    = 'inductor.eecs.umich.edu';
-var PORT    = 4001;
-
-var dgram      = require('dgram');
+// REQUIRES
+var http       = require('http');
 var tessel     = require('tessel');
 var ambientlib = require('ambient-attx4');
-var climatelib = require('climate-si7005');
+var climatelib = require('climate-si7005'); // or 'climate-si7020' depending on your module
 
-var soundevent = false;
+// MODULE PORTS
+var AMBIENT = 'A';
+var CLIMATE = 'B';
+var MOTION  = 'D';
 
+// HEMERA ATTRIBUTES
+var NODE_ID = 20;
+
+// HTTP REQUEST SETUP
+var httprequest = {
+  host    : 'inductor.eecs.umich.edu',
+  port    : 8081,
+  path    : '/TtYWhXKRke',
+  method  : 'POST',
+  headers : {'Content-Type': 'application/json'}
+};
+
+// SAMPLE THE MODULES & SEND DATA TO GATD
 var ambient = ambientlib.use(tessel.port['A']);
 ambient.on('ready', function () {
   var climate = climatelib.use(tessel.port['B']);
   climate.on('ready', function () {
+    var motion = tessel.port['D'].digital;
+    motion[0].output(0), motion[1].output(1), motion[2].input();
     setInterval( function () {
       ambient.getLightLevel( function(error, light) {
-        ambient.getSoundLevel( function(error, sound) {
-          climate.readHumidity( function (error, humidity) {
-      	    climate.readTemperature( 'f', function (error, temperature) {
-              var message = {
-                'id'          : NODE_ID
-                'time'        : parseInt(Date.now()),
-                'light'       : light,
-                'motion'      : soundevent,
-                'profile'     : PROFILE,
-                'humidity'    : humidity,
-                'temperature' : temperature,
-              };
-              console.log(message);
-              soundevent = false;
-              ambient.clearSoundTrigger();
-              ambient.setSoundTrigger(0.0186);
-              var client = dgram.createSocket("udp4");
-              client.send(JSON.stringify(message), 0, message.length, PORT, GATD, function(error, bytes) { client.close(); });
-            });
-      	  });
-      	});
+        climate.readHumidity( function (error, humidity) {
+    	    climate.readTemperature( 'f', function (error, temperature) {
+            var message = {
+              id          : NODE_ID,
+              time        : parseInt(Date.now()),
+              light       : light,
+              motion      : motion[2].read(),
+              humidity    : humidity,
+              temperature : temperature,
+            };
+            console.log(message);
+            try {
+              var request = http.request(httprequest);
+              request.write(JSON.stringify(message));
+              request.end();
+              request.on('error', function(error) { console.log('HTTP POST ERROR', error) });  
+            } catch (error) { console.log('HTTP REQUEST ERROR', error) }
+          });
+    	  });
       });
-    }, 3000);
+    }, 4000);
   });
-  climate.on('error', function (error) { console.log( 'CLIMATE MODULE ERROR', err) });
+  climate.on('error', function (error) { console.log('CLIMATE MODULE ERROR', error) });
 });
-ambient.on('sound-trigger', function(data) { soundevent = true });
-ambient.on('error', function (error) { console.log( 'AMBIENT MODULE ERROR', err) });
+ambient.on('error', function (error) { console.log('AMBIENT MODULE ERROR', error) });
