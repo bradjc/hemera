@@ -1,0 +1,10 @@
+LOCATION="/dev/ttyUSB0"
+
+
+
+[[ $1 =~ $(echo '^[0-9]+$') ]] && echo "PFLAGS += -DID_NUMBER=$1" >> Makefile
+
+make hemera install.$1 miniprog bsl,$LOCATION
+
+sed --in-place '/DID_NUMBER/d' Makefile
+
