@@ -19,9 +19,7 @@ Setup
 ### 1) Clone &amp; install the Lab11 version of tinyos-main:
 
     git clone https://github.com/lab11/tinyos-main.git
-    cd tinyos-main
-    git checkout for-rpi
-    cd tools
+    cd tinyos-main/tools
     ./Bootstrap
     ./configure
     make
