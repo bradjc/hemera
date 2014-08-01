@@ -204,8 +204,8 @@ implementation {
                                           error_t e) {
 
     if (len >= 5) {
-      if (buf[0] == 's' && buf[0] == 't' && buf[0] == 'a' &&
-          buf[0] == 'r' && buf[0] == 't') {
+      if (buf[0] == 's' && buf[1] == 't' && buf[2] == 'a' &&
+          buf[3] == 'r' && buf[4] == 't') {
 
         // pause logging
         call TimerTHL.stop();
